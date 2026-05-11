@@ -5,25 +5,25 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/luniticmush/SayyadParvez.github.io.git'
+                git branch: 'main', url: 'https://github.com/luniticmush/SayyadParvez.github.io.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t parvez-portfolio .'
+                bat 'docker build -t parvez-portfolio .'
             }
         }
 
         stage('Remove Old Container') {
             steps {
-                sh 'docker rm -f parvez-container || true'
+                bat 'docker rm -f parvez-container || exit 0'
             }
         }
 
         stage('Run Website') {
             steps {
-                sh 'docker run -d -p 80:80 --name parvez-container parvez-portfolio'
+                bat 'docker run -d -p 80:80 --name parvez-container parvez-portfolio'
             }
         }
     }
